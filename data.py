@@ -34,7 +34,7 @@ def get_bill_list(year, month):
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
-        select account.id, account.name, bill.amount, strftime('%Y-%m-%d',bill.dt_paid) dt_paid,  
+        select account.id, account.name, (bill.amount/100), strftime('%Y-%m-%d',bill.dt_paid) dt_paid,  
         :month || '/' || account.due_dom || '/' || :year due_dom1, 0 ytd, 0 last_bill, 
         0 last_year, account.due_dom due_dom2, bill.note
         from bill
