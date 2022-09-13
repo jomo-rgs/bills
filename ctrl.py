@@ -3,6 +3,9 @@ import data
 
 class Ctrl():
 
+    def init_db():
+        data.create_db()
+
     def get_month_str_list():
         months_choices = []
         for i in range(1,13):

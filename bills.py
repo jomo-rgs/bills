@@ -14,6 +14,8 @@ def bills():
 
     bill_screen = Tk()
 
+    Ctrl.init_db()
+
     ############################################################
     def btnInitilize_event():
 

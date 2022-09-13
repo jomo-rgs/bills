@@ -78,3 +78,34 @@ def save_bill(year, month, account_id, amount, note, dt_paid):
 
     conn.commit()
     conn.close() 
+
+def create_db():
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute("""
+        CREATE TABLE if not exists "account" (
+            "id"	INTEGER NOT NULL,
+            "name"	TEXT,
+            "def_amt"	INTEGER,
+            "month"	INTEGER,
+            "active"	INTEGER,
+            "due_dom"	INTEGER,
+            "note"	TEXT,
+            PRIMARY KEY("id")
+        )
+    """)
+    conn.commit()
+
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute("""
+        CREATE TABLE if not exists "bill" (
+            "account_id"	INTEGER NOT NULL,
+            "amount"	INTEGER,
+            "dt_paid"	INTEGER,
+            "note"	TEXT,
+            "year"	INTEGER NOT NULL,
+            "month"	INTEGER NOT NULL
+        )
+    """)
+    conn.commit()
