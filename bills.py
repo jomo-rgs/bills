@@ -5,6 +5,7 @@ from tkinter import ttk
 import tkinter as tk
 import tkinter
 from tkinter.messagebox import showinfo
+from tkinter import filedialog as fd
 
 from ctrl import Ctrl
 
@@ -70,8 +71,11 @@ def bills():
         #     item = tree.item(selected_item)
         #     record = item['values']
 
+    def btnAttachDocs_click():
+        Ctrl.attachDoc(fd.askopenfilename(), txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
-
+    def btnViewDocs_click():
+        Ctrl.viewDocs(txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
         
 
@@ -161,13 +165,17 @@ def bills():
     txtDatePaid = Entry(bill_screen, textvariable=txtDatePaidValue)
     txtDatePaid.grid(row=6, column=0,sticky=W, padx=5)  
 
-    # Files
-    btnFiles = tkinter.Button(bill_screen, text ="Files", command = Ctrl.initilize_month)
-    btnFiles.grid(row=7,column=0, pady=10, padx=5, sticky=E) 
+    # View Documents
+    btnViewDocs = tkinter.Button(bill_screen, text ="View Documents", command = btnViewDocs_click)
+    btnViewDocs.grid(row=7,column=0, pady=10, padx=5, sticky=E) 
+
+    # Attach Documents
+    btnAttachDocs = tkinter.Button(bill_screen, text ="Attach Document", command = btnAttachDocs_click)
+    btnAttachDocs.grid(row=7,column=1, pady=10, padx=5, sticky=E) 
 
     # Save
     btnSave = tkinter.Button(bill_screen, text ="Save", command = save_form)
-    btnSave.grid(row=7,column=1, pady=10, padx=5, sticky=W) 
+    btnSave.grid(row=7,column=3, pady=10, padx=5, sticky=W) 
 
     bill_screen.mainloop()
 

@@ -56,13 +56,6 @@ def get_bill_list(year, month):
 #####################################################
 #####################################################    
 def save_bill(year, month, account_id, amount, note, dt_paid):
-    print(year)
-    print(month)
-    print(account_id)
-    print(amount)
-    print(note)
-    print(dt_paid)
-
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
