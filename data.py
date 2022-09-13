@@ -15,7 +15,7 @@ def initilize_month_sql(year, month):
         insert into bill (amount, account_id,year,month)
         select def_amt, id,:year,:month
         from account
-        where (month is null or  month = :month)
+        where (ifnull(month,'') = '' or  month = :month)
         and ifnull(active,0) = 1
         and id not in (select account_id from  bill where month = :month and year = :year);
     """,
@@ -34,7 +34,7 @@ def get_bill_list(year, month):
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
-        select account.id, account.name, (bill.amount/100), strftime('%Y-%m-%d',bill.dt_paid) dt_paid,  
+        select account.id, account.name, bill.amount, strftime('%Y-%m-%d',bill.dt_paid) dt_paid,  
         :month || '/' || account.due_dom || '/' || :year due_dom1, 0 ytd, 0 last_bill, 
         0 last_year, account.due_dom due_dom2, bill.note
         from bill
@@ -56,6 +56,13 @@ def get_bill_list(year, month):
 #####################################################
 #####################################################    
 def save_bill(year, month, account_id, amount, note, dt_paid):
+    print(year)
+    print(month)
+    print(account_id)
+    print(amount)
+    print(note)
+    print(dt_paid)
+
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""

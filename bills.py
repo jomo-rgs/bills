@@ -31,7 +31,10 @@ def bills():
         for bill in bills:
             print(bill)
             # tree.insert(parent="", index="end", values=("CCU 540 Power 2", "150.00", "8/22/2022", "27th", "5000", "175.00"))
+            bill = list(bill)
+            bill[2] = f"{bill[2]/100:.2f}"
             tree.insert(parent="", index="end", values=bill)
+
 
     ###############################################################
     def tree_select(event):
@@ -51,7 +54,25 @@ def bills():
             txtHiddenAccountId.set(bill_list[0])
         
     def save_form():
-        Ctrl.save_bill(dropYear.get(),dropMonth.get(), txtHiddenAccountId.get(), txtAmountValue.get(), txtNoteValue.get(), txtDatePaidValue.get())
+        Ctrl.save_bill(dropYear.get(), dropMonth.get(), txtHiddenAccountId.get(), txtAmountValue.get(), 
+        txtNoteValue.get(), txtDatePaidValue.get())
+
+        # Refresh grid values
+        selected_item = tree.selection()[0]
+        item = tree.item(selected_item)
+        record = list(item['values'])
+        record[2] = txtAmountValue.get()
+        record[3] = txtDatePaidValue.get()
+        record[9] = txtNoteValue.get()
+
+        tree.item(selected_item, text="", values=record)
+        # for selected_item in tree.selection():
+        #     item = tree.item(selected_item)
+        #     record = item['values']
+
+
+
+
         
 
 
