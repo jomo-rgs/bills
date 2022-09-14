@@ -53,7 +53,8 @@ def bills():
             txtDatePaidValue.set(bill_list[3])
             txtNoteValue.set(bill_list[9])
             txtHiddenAccountId.set(bill_list[0])
-        
+
+    ###############################################################        
     def save_form():
         Ctrl.save_bill(dropYear.get(), dropMonth.get(), txtHiddenAccountId.get(), txtAmountValue.get(), 
         txtNoteValue.get(), txtDatePaidValue.get())
@@ -71,9 +72,11 @@ def bills():
         #     item = tree.item(selected_item)
         #     record = item['values']
 
+    ###############################################################
     def btnAttachDocs_click():
         Ctrl.attachDoc(fd.askopenfilename(), txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
+    ###############################################################
     def btnViewDocs_click():
         Ctrl.viewDocs(txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 

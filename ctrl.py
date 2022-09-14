@@ -63,12 +63,15 @@ class Ctrl():
                 shutil.copyfile(docToAttach, new_file)
 
     def viewDocs(accountId, year, month):
-        pass
-        # docs_path = f"{accountId}{year}{month}"
-        # docs_path = os.path.join("./docs",docs_path)
+        docs_path = f"{accountId}{year}{month}"
+        docs_path = os.path.join("./docs",docs_path)
 
         # filedialog.askopenfilename(title = "Select a File",
         #                                   filetypes = (("all files","*.*")) )
+        if os.path.exists(docs_path):
+            # Linux
+            if os.name == "posix":
+                os.system(f"xdg-open {docs_path}")
 
 
 
