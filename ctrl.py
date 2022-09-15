@@ -66,6 +66,12 @@ class Ctrl():
         docs_path = f"{accountId}{year}{month}"
         docs_path = os.path.join("./docs",docs_path)
 
+        # Create dir if needed
+        print("Does it exist???")
+        if not os.path.exists(docs_path):
+            print(f"Path does not exist: {docs_path}")
+            os.makedirs(docs_path)        
+
         # filedialog.askopenfilename(title = "Select a File",
         #                                   filetypes = (("all files","*.*")) )
         if os.path.exists(docs_path):

@@ -74,7 +74,9 @@ def bills():
 
     ###############################################################
     def btnAttachDocs_click():
-        Ctrl.attachDoc(fd.askopenfilename(), txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
+        fileToOpen = fd.askopenfilename()
+        if isinstance(fileToOpen, str):
+            Ctrl.attachDoc(fileToOpen, txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
     ###############################################################
     def btnViewDocs_click():
