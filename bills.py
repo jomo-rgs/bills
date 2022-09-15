@@ -36,6 +36,12 @@ def bills():
             bill[2] = f"{bill[2]/100:.2f}"
             tree.insert(parent="", index="end", values=bill)
 
+        #Clear Form Values
+        txtAmountValue.set("")
+        txtDatePaidValue.set("")
+        txtNoteValue.set("")
+        txtHiddenAccountId.set("")
+
 
     ###############################################################
     def tree_select(event):

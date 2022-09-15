@@ -56,13 +56,14 @@ def get_bill_list(year, month):
 #####################################################
 #####################################################    
 def save_bill(year, month, account_id, amount, note, dt_paid):
+    print(f"dt_paid:{dt_paid}")
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
         update bill
             set amount =  :amount,
                 note = :note,
-                dt_paid = date(dt_paid)
+                dt_paid = date(:dt_paid)
         where month = :month
         and year = :year
         and account_id= :account_id;
