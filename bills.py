@@ -41,6 +41,7 @@ def bills():
         txtDatePaidValue.set("")
         txtNoteValue.set("")
         txtHiddenAccountId.set("")
+        intPaymentConfirmed.set(0)
 
 
     ###############################################################
@@ -59,11 +60,12 @@ def bills():
             txtDatePaidValue.set(bill_list[3])
             txtNoteValue.set(bill_list[9])
             txtHiddenAccountId.set(bill_list[0])
+            intPaymentConfirmed.set(bill_list[4])
 
     ###############################################################        
     def save_form():
         Ctrl.save_bill(dropYear.get(), dropMonth.get(), txtHiddenAccountId.get(), txtAmountValue.get(), 
-        txtNoteValue.get(), txtDatePaidValue.get())
+        txtNoteValue.get(), txtDatePaidValue.get(), intPaymentConfirmed.get())
 
         # Refresh grid values
         selected_item = tree.selection()[0]
@@ -71,7 +73,8 @@ def bills():
         record = list(item['values'])
         record[2] = txtAmountValue.get()
         record[3] = txtDatePaidValue.get()
-        record[9] = txtNoteValue.get()
+        record[4] = intPaymentConfirmed.get()
+        # record[9] = txtNoteValue.get()
 
         tree.item(selected_item, text="", values=record)
         # for selected_item in tree.selection():
@@ -116,13 +119,14 @@ def bills():
     #####################################################################
     global tree
     tree = ttk.Treeview(bill_screen)
-    tree['columns'] = ("account_id","account","amount","date_paid","due_date","ytd","last_bill","last_year","note")
+    tree['columns'] = ("account_id","account","amount","date_paid","payment_confirmed","due_date","ytd","last_bill","last_year","note")
 
     tree.column("#0", width=0, stretch=NO)
     tree.column("account_id", width=0, stretch=NO) #Hidden
     tree.column("account", anchor=W, width=120)
     tree.column("amount", anchor=W, width=120)
     tree.column("date_paid", anchor=W, width=120)
+    tree.column("payment_confirmed", anchor=W, width=155)
     tree.column("due_date", anchor=W, width=120)
     tree.column("ytd", anchor=W, width=120)
     tree.column("last_bill", anchor=W, width=120)
@@ -134,6 +138,7 @@ def bills():
     tree.heading("account", text="Account", anchor=CENTER)
     tree.heading("amount", text="Amount", anchor=CENTER)
     tree.heading("date_paid", text="Date Paid", anchor=CENTER)
+    tree.heading("payment_confirmed", text="Payment Confirmed", anchor=CENTER)
     tree.heading("due_date", text="Due Date", anchor=CENTER)
     tree.heading("ytd", text="YTD", anchor=CENTER)
     tree.heading("last_bill", text="Last Bill", anchor=CENTER)
@@ -176,17 +181,23 @@ def bills():
     txtDatePaid = Entry(bill_screen, textvariable=txtDatePaidValue)
     txtDatePaid.grid(row=6, column=0,sticky=W, padx=5)  
 
+    # Payment Confirmed 
+    global intPaymentConfirmed
+    intPaymentConfirmed = tk.IntVar()
+    chkPaymentConfirmed = Checkbutton(bill_screen, variable=intPaymentConfirmed, text="Payment Confirmed", onvalue=1, offvalue=0 )
+    chkPaymentConfirmed.grid(row=8,column=0, pady=10, padx=5, sticky=W) 
+
     # View Documents
     btnViewDocs = tkinter.Button(bill_screen, text ="View Documents", command = btnViewDocs_click)
-    btnViewDocs.grid(row=7,column=0, pady=10, padx=5, sticky=E) 
+    btnViewDocs.grid(row=9,column=0, pady=10, padx=5, sticky=E) 
 
     # Attach Documents
     btnAttachDocs = tkinter.Button(bill_screen, text ="Attach Document", command = btnAttachDocs_click)
-    btnAttachDocs.grid(row=7,column=1, pady=10, padx=5, sticky=E) 
+    btnAttachDocs.grid(row=9,column=1, pady=10, padx=5, sticky=E) 
 
     # Save
     btnSave = tkinter.Button(bill_screen, text ="Save", command = save_form)
-    btnSave.grid(row=7,column=3, pady=10, padx=5, sticky=W) 
+    btnSave.grid(row=9,column=3, pady=10, padx=5, sticky=W) 
 
     bill_screen.mainloop()
 

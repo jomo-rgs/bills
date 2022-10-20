@@ -12,8 +12,8 @@ def initilize_month_sql(year, month):
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
-        insert into bill (amount, account_id,year,month)
-        select def_amt, id,:year,:month
+        insert into bill (amount, account_id,year,month,payment_confirmed)
+        select def_amt, id,:year,:month, 0
         from account
         where (ifnull(month,'') = '' or  month = :month)
         and ifnull(active,0) = 1
@@ -28,13 +28,14 @@ def initilize_month_sql(year, month):
     conn.close() 
 
 def get_bill_list(year, month):
-    # due_date2, account_id, note are hiddent in treeview 
+    # due_date2, account_id, note are hidden in treeview 
     # due_date2 is only used for order, Be sure to leave it at the end of sql
     # strftime('%m/%d/%Y',bill.dt_paid)
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
         select account.id, account.name, bill.amount, strftime('%Y-%m-%d',bill.dt_paid) dt_paid,  
+        bill.payment_confirmed,
         :month || '/' || account.due_dom || '/' || :year due_dom1, 0 ytd, 0 last_bill, 
         0 last_year, account.due_dom due_dom2, bill.note
         from bill
@@ -55,15 +56,16 @@ def get_bill_list(year, month):
 
 #####################################################
 #####################################################    
-def save_bill(year, month, account_id, amount, note, dt_paid):
-    print(f"dt_paid:{dt_paid}")
+def save_bill(year, month, account_id, amount, note, dt_paid, payment_confirmed):
+    # print(f"dt_paid:{dt_paid}")
     conn = sqlite3.connect(get_db_file())
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
         update bill
             set amount =  :amount,
                 note = :note,
-                dt_paid = date(:dt_paid)
+                dt_paid = date(:dt_paid),
+                payment_confirmed = :payment_confirmed
         where month = :month
         and year = :year
         and account_id= :account_id;
@@ -74,7 +76,8 @@ def save_bill(year, month, account_id, amount, note, dt_paid):
         'account_id':account_id,
         'amount':amount,
         'note':note,
-        'dt_paid':dt_paid
+        'dt_paid':dt_paid,
+        'payment_confirmed':payment_confirmed
     })
 
     conn.commit()
@@ -104,9 +107,18 @@ def create_db():
             "account_id"	INTEGER NOT NULL,
             "amount"	INTEGER,
             "dt_paid"	INTEGER,
+            "payment_confirmed" INTEGER,
             "note"	TEXT,
             "year"	INTEGER NOT NULL,
             "month"	INTEGER NOT NULL
         )
     """)
     conn.commit()
+
+    # conn = sqlite3.connect(get_db_file())
+    # sql_cursor = conn.cursor()
+    # sql_cursor.execute("""
+    #     INSERT INTO account (id, name, def_amt, active, due_dom, note)
+    #     values (1, "account 1", 299, 1, 0, "")
+    # """)
+    # conn.commit()    

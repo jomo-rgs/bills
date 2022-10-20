@@ -36,9 +36,9 @@ class Ctrl():
     def get_bill(year, month, account):
         pass
 
-    def save_bill(intYear, strMonth, account_id, amount, note, dt_paid):
+    def save_bill(intYear, strMonth, account_id, amount, note, dt_paid, payment_confirmed):
         strMonthList = Ctrl.get_month_str_list()
-        data.save_bill(intYear, strMonthList.index(strMonth)+1, account_id, amount.replace(".",""), note, dt_paid)
+        data.save_bill(intYear, strMonthList.index(strMonth)+1, account_id, amount.replace(".",""), note, dt_paid, payment_confirmed)
 
     def viewDocs():
         pass
