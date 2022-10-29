@@ -58,7 +58,7 @@ def bills():
             # lblAmount[] = bill_lis[2]
             txtAmountValue.set(bill_list[2])
             txtDatePaidValue.set(bill_list[3])
-            txtNoteValue.set(bill_list[9])
+            txtNoteValue.set(bill_list[10])
             txtHiddenAccountId.set(bill_list[0])
             intPaymentConfirmed.set(bill_list[4])
 
