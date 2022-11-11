@@ -74,7 +74,7 @@ def bills():
         record[2] = txtAmountValue.get()
         record[3] = txtDatePaidValue.get()
         record[4] = intPaymentConfirmed.get()
-        # record[9] = txtNoteValue.get()
+        record[10] = txtNoteValue.get()
 
         tree.item(selected_item, text="", values=record)
         # for selected_item in tree.selection():
