@@ -48,6 +48,15 @@ def bills():
         txtHiddenAccountId.set("")
         intPaymentConfirmed.set(0)
 
+        # Lock form from input
+        txtAmount.config(state= "disabled")
+        txtDatePaid.config(state= "disabled")
+        txtNote.config(state= "disabled")
+        chkPaymentConfirmed.config(state= "disabled")
+        btnViewDocs.config(state= "disabled")
+        btnAttachDocs.config(state= "disabled")
+        btnSave.config(state= "disabled")
+
 
     ###############################################################
     def tree_select(event):
@@ -57,6 +66,15 @@ def bills():
 
             print (record[0])
             populate_form(record)
+
+            # Lock form from input
+            txtAmount.config(state= "normal")
+            txtDatePaid.config(state= "normal")
+            txtNote.config(state= "normal")
+            chkPaymentConfirmed.config(state= "normal")
+            btnViewDocs.config(state= "normal")
+            btnAttachDocs.config(state= "normal")
+            btnSave.config(state= "normal")
 
     ###############################################################
     def populate_form(bill_list):
@@ -161,7 +179,7 @@ def bills():
     txtHiddenAccountId = tk.StringVar()
 
     # Amount 
-    global txtAmountValue
+    global txtAmountValue, txtAmount
     txtAmountValue = tk.StringVar()
     lblAmount = Label(bill_screen, text="Amount")
     lblAmount.grid(row=3, column=0, sticky=W, padx=5)
@@ -170,7 +188,7 @@ def bills():
     txtAmount.grid(row=4, column=0,sticky=W, padx=5)
 
     # Note
-    global txtNoteValue
+    global txtNoteValue, txtNote
     txtNoteValue = tk.StringVar()
     lblNote = Label(bill_screen, text="Note")
     lblNote.grid(row=3, column=1, sticky=W, padx=5)
@@ -178,7 +196,7 @@ def bills():
     txtNote.grid(row=4, column=1,sticky=W, padx=5, columnspan=2)
 
     # Date Paid
-    global txtDatePaidValue
+    global txtDatePaidValue, txtDatePaid
     txtDatePaidValue = tk.StringVar()
     lblDatePaid = Label(bill_screen, text="Date Paid")
     lblDatePaid.grid(row=5, column=0, sticky=W, padx=5)
@@ -186,20 +204,23 @@ def bills():
     txtDatePaid.grid(row=6, column=0,sticky=W, padx=5)  
 
     # Payment Confirmed 
-    global intPaymentConfirmed
+    global intPaymentConfirmed, chkPaymentConfirmed
     intPaymentConfirmed = tk.IntVar()
     chkPaymentConfirmed = Checkbutton(bill_screen, variable=intPaymentConfirmed, text="Payment Confirmed", onvalue=1, offvalue=0 )
     chkPaymentConfirmed.grid(row=8,column=0, pady=10, padx=5, sticky=W) 
 
     # View Documents
+    global btnViewDocs
     btnViewDocs = tkinter.Button(bill_screen, text ="View Documents", command = btnViewDocs_click)
     btnViewDocs.grid(row=9,column=0, pady=10, padx=5, sticky=E) 
 
     # Attach Documents
+    global btnAttachDocs
     btnAttachDocs = tkinter.Button(bill_screen, text ="Attach Document", command = btnAttachDocs_click)
     btnAttachDocs.grid(row=9,column=1, pady=10, padx=5, sticky=E) 
 
     # Save
+    global btnSave
     btnSave = tkinter.Button(bill_screen, text ="Save", command = save_form)
     btnSave.grid(row=9,column=3, pady=10, padx=5, sticky=W) 
 
