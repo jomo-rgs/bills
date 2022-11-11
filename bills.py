@@ -23,6 +23,11 @@ def bills():
         # Populate database with values
         Ctrl.initilize_month(dropYear.get(),dropMonth.get())
 
+        loadMonth_event(None)
+
+    ############################################################
+    def loadMonth_event(e):
+
         #Clear the treeview list items
         for item in tree.get_children():
             tree.delete(item)
@@ -91,9 +96,6 @@ def bills():
     def btnViewDocs_click():
         Ctrl.viewDocs(txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
-        
-
-
     #####################################################################
     ## Dropdown Year
     #####################################################################
@@ -107,6 +109,8 @@ def bills():
     dropMonth = ttk.Combobox(bill_screen,value=Ctrl.get_month_str_list())
     dropMonth.current(0)
     dropMonth.grid(row=0,column=1)
+    dropMonth.bind("<<ComboboxSelected>>", loadMonth_event)
+
 
     #####################################################################
     ## Button Initilize Month
