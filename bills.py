@@ -117,14 +117,14 @@ def bills():
     #####################################################################
     ## Dropdown Year
     #####################################################################
-    dropYear = ttk.Combobox(bill_screen, value=Ctrl.get_year_list())
+    dropYear = ttk.Combobox(bill_screen, state="readonly", value=Ctrl.get_year_list())
     dropYear.current(0)
     dropYear.grid(row=0,column=0)
 
     #####################################################################
     ## Dropdown Month
     #####################################################################
-    dropMonth = ttk.Combobox(bill_screen,value=Ctrl.get_month_str_list())
+    dropMonth = ttk.Combobox(bill_screen,state="readonly", value=Ctrl.get_month_str_list())
     dropMonth.current(0)
     dropMonth.grid(row=0,column=1)
     dropMonth.bind("<<ComboboxSelected>>", loadMonth_event)
@@ -224,7 +224,10 @@ def bills():
     btnSave = tkinter.Button(bill_screen, text ="Save", command = save_form)
     btnSave.grid(row=9,column=3, pady=10, padx=5, sticky=W) 
 
+    loadMonth_event(None)
+
     bill_screen.mainloop()
+
 
 
 #################################
