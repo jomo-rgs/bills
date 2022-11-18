@@ -1,3 +1,5 @@
+# Version 0.3 - Released Nov 16, 2022
+
 from ast import Lambda
 from re import MULTILINE
 from tkinter import *
