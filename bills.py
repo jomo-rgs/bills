@@ -10,6 +10,7 @@ from tkinter.messagebox import showinfo
 from tkinter import filedialog as fd
 
 from ctrl import Ctrl
+import datetime
 
 def bills():
 
@@ -105,6 +106,17 @@ def bills():
         # for selected_item in tree.selection():
         #     item = tree.item(selected_item)
         #     record = item['values']
+
+    ###############################################################        
+    def set_today(): 
+        dt = datetime.datetime.now()
+        month = dt.strftime("%m")
+        day = dt.strftime("%d")
+        year = dt.strftime("%Y")
+        txtDatePaidValue.set(f"{year}-{month}-{day}")
+        
+        
+
 
     ###############################################################
     def btnAttachDocs_click():
@@ -204,6 +216,11 @@ def bills():
     lblDatePaid.grid(row=5, column=0, sticky=W, padx=5)
     txtDatePaid = Entry(bill_screen, textvariable=txtDatePaidValue)
     txtDatePaid.grid(row=6, column=0,sticky=W, padx=5)  
+
+    # Today
+    global btnToday
+    btnToday = tkinter.Button(bill_screen, text ="Today", command = set_today)
+    btnToday.grid(row=6,column=0, pady=10, padx=180, sticky=W)     
 
     # Payment Confirmed 
     global intPaymentConfirmed, chkPaymentConfirmed
