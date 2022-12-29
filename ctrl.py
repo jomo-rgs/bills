@@ -4,13 +4,15 @@ from ast import Pass
 import datetime
 import data
 import shutil
-from subprocess import call
+import subprocess
 from tkinter import filedialog
 
 class Ctrl():
 
     def init_db():
         data.create_db()
+
+        print(f"Platform: {sys.platform}")
 
     def get_month_str_list():
         months_choices = []
@@ -81,19 +83,17 @@ class Ctrl():
         #                                   filetypes = (("all files","*.*")) )
         if os.path.exists(docs_path):
             # Linux
-            # if os.name == "posix":
-                # os.system(f"xdg-open {docs_path}")
+            if sys.platform == "linux":
+                os.system(f"xdg-open {docs_path}")
             print(os.name)
+            # mac
             if sys.platform == "darwin":
                 docs_path = docs_path + "/"
                 call(["open", docs_path])
+            # windows
+            if sys.platform == "win32":
+                subprocess.Popen(f"explorer /select,{docs_path}")
 
-            # print(f"OS: {sys.platform}")
-            # print(f"Current Path: {os.getcwd()}")
-
-
-
-            
 
     # def get_month_list():
     #     months_choices = []
