@@ -228,20 +228,22 @@ def bills():
     chkPaymentConfirmed = Checkbutton(bill_screen, variable=intPaymentConfirmed, text="Payment Confirmed", onvalue=1, offvalue=0 )
     chkPaymentConfirmed.grid(row=8,column=0, pady=10, padx=5, sticky=W) 
 
+    # Save
+    global btnSave
+    btnSave = tkinter.Button(bill_screen, text ="Save", command = save_form)
+    btnSave.grid(row=9,column=0, pady=20, padx=5, sticky=W)     
+
     # View Documents
     global btnViewDocs
     btnViewDocs = tkinter.Button(bill_screen, text ="View Documents", command = btnViewDocs_click)
-    btnViewDocs.grid(row=9,column=0, pady=10, padx=5, sticky=E) 
+    btnViewDocs.grid(row=9,column=0, pady=20, padx=70, sticky=W) 
 
     # Attach Documents
     global btnAttachDocs
     btnAttachDocs = tkinter.Button(bill_screen, text ="Attach Document", command = btnAttachDocs_click)
-    btnAttachDocs.grid(row=9,column=1, pady=10, padx=5, sticky=E) 
+    btnAttachDocs.grid(row=9,column=0, pady=20, padx=215, sticky=W) 
 
-    # Save
-    global btnSave
-    btnSave = tkinter.Button(bill_screen, text ="Save", command = save_form)
-    btnSave.grid(row=9,column=3, pady=10, padx=5, sticky=W) 
+
 
     loadMonth_event(None)
 
