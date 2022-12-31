@@ -35,9 +35,9 @@ def get_bill_list(year, month):
     sql_cursor = conn.cursor()
     sql_cursor.execute("""
         select account.id, account.name, bill.amount, strftime('%Y-%m-%d',bill.dt_paid) dt_paid,  
-        bill.payment_confirmed,
+        '' payment_confirmed_str,
         :month || '/' || account.due_dom || '/' || :year due_dom1, 0 ytd, 0 last_bill, 
-        0 last_year, account.due_dom due_dom2, bill.note
+        0 last_year, account.due_dom due_dom2, bill.note, bill.payment_confirmed
         from bill
         inner join account on account.id = bill.account_id
         where bill.year = :year

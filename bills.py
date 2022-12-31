@@ -38,10 +38,11 @@ def bills():
         #Update Grid
         bills = Ctrl.get_bill_list(dropYear.get(),dropMonth.get())
         for bill in bills:
-            print(bill)
+            # print(bill)
             # tree.insert(parent="", index="end", values=("CCU 540 Power 2", "150.00", "8/22/2022", "27th", "5000", "175.00"))
             bill = list(bill)
             bill[2] = f"{bill[2]/100:.2f}"
+            bill[4] = "Confirmed" if bill[11] == 1 else ""
             tree.insert(parent="", index="end", values=bill)
 
         #Clear Form Values
@@ -86,7 +87,7 @@ def bills():
             txtDatePaidValue.set(bill_list[3])
             txtNoteValue.set(bill_list[10])
             txtHiddenAccountId.set(bill_list[0])
-            intPaymentConfirmed.set(bill_list[4])
+            intPaymentConfirmed.set(bill_list[11])
 
     ###############################################################        
     def save_form():
@@ -99,7 +100,7 @@ def bills():
         record = list(item['values'])
         record[2] = txtAmountValue.get()
         record[3] = txtDatePaidValue.get()
-        record[4] = intPaymentConfirmed.get()
+        record[4] = "Confirmed" if intPaymentConfirmed.get() == 1 else "" 
         record[10] = txtNoteValue.get()
 
         tree.item(selected_item, text="", values=record)
