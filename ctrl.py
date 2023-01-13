@@ -23,8 +23,8 @@ class Ctrl():
 
     def get_year_list():
         years_choices = []
-        for ii in range(1,13):
-            years_choices.append((datetime.date.today().year -1) + ii)
+        for ii in range(2022,datetime.date.today().year + 1):
+            years_choices.append(ii)
 
         return years_choices
     
