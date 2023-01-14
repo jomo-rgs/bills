@@ -1,6 +1,7 @@
 # Version 0.3 - Released Nov 16, 2022
 # Version 0.4 - Released Dec 31, 2022
 # Version 0.5 - Released Jan 13, 2023
+# Version 0.6 - Released Jan 14, 2023
 
 
 from ast import Lambda
@@ -18,7 +19,7 @@ import datetime
 def bills():
 
     print("Start Bills...")
-    version = 0.5
+    version = 0.6
 
     bill_screen = Tk()
     bill_screen.title(f"Bills  v{version}")
