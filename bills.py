@@ -18,7 +18,7 @@ import datetime
 def bills():
 
     print("Start Bills...")
-    version = 0.3
+    version = 0.5
 
     bill_screen = Tk()
     bill_screen.title(f"Bills  v{version}")
