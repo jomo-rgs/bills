@@ -55,7 +55,8 @@ class Ctrl():
         if len(docToAttach) >= 0:
 
             docs_path = f"{accountId}{year}{month}"
-            docs_path = os.path.join("./docs",docs_path)
+            # docs_path = os.path.join("./docs",docs_path)
+            docs_path = os.path.join(os.getcwd(),"docs",docs_path)
 
             # Create dir if needed
             print("Does it exist???")
@@ -71,7 +72,7 @@ class Ctrl():
     def viewDocs(accountId, year, month):
         docs_path = f"{accountId}{year}{month}"
         # docs_path = os.path.join("./docs",docs_path)
-        docs_path = os.path.join(os.getcwd(),docs_path)
+        docs_path = os.path.join(os.getcwd(),"docs",docs_path)
 
         # Create dir if needed
         print("Does it exist???")
