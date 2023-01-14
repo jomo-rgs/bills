@@ -1,4 +1,7 @@
 # Version 0.3 - Released Nov 16, 2022
+# Version 0.4 - Released Dec 31, 2022
+# Version 0.5 - Released Jan 13, 2023
+
 
 from ast import Lambda
 from re import MULTILINE
