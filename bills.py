@@ -47,8 +47,9 @@ def bills():
             # print(bill)
             # tree.insert(parent="", index="end", values=("CCU 540 Power 2", "150.00", "8/22/2022", "27th", "5000", "175.00"))
             bill = list(bill)
-            bill[2] = f"{bill[2]/100:.2f}"
-            bill[4] = "Confirmed" if bill[11] == 1 else ""
+            bill[2] = f"{bill[2]/100:.2f}"                  # amount
+            bill[4] = "Confirmed" if bill[11] == 1 else ""  # payment_confirmed
+            bill[6] = f"{bill[6]/100:.2f}"                  # ytd
             tree.insert(parent="", index="end", values=bill)
 
         #Clear Form Values
