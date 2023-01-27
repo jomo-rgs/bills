@@ -140,7 +140,7 @@ def bills():
     #####################################################################
     dropYear = ttk.Combobox(bill_screen, state="readonly", value=Ctrl.get_year_list())
     dropYear.current(0)
-    dropYear.grid(row=0,column=0)
+    dropYear.grid(row=0,column=0,pady=20, padx=25, sticky=W)
     dropYear.bind("<<ComboboxSelected>>", loadMonth_event)
 
     #####################################################################
@@ -148,7 +148,7 @@ def bills():
     #####################################################################
     dropMonth = ttk.Combobox(bill_screen,state="readonly", value=Ctrl.get_month_str_list())
     dropMonth.current(0)
-    dropMonth.grid(row=0,column=1)
+    dropMonth.grid(row=0,column=0,pady=20, padx=215, sticky=W)
     dropMonth.bind("<<ComboboxSelected>>", loadMonth_event)
 
 
