@@ -68,6 +68,17 @@ def bills():
         btnAttachDocs.config(state= "disabled")
         btnSave.config(state= "disabled")
 
+        # Update Status Bar at bottom
+        p_year = dropYear.get()
+        p_account = ''
+        p_amt = Ctrl.get_ytd(p_year, p_account)
+        lblYtdValue.set(p_amt)
+
+        p_month = dropMonth.get()
+        p_amt = Ctrl.get_month_total(p_month)
+        lblMonthTotalValue.set(p_amt)
+        
+
 
     ###############################################################
     def tree_select(event):
@@ -252,7 +263,28 @@ def bills():
     btnAttachDocs = tkinter.Button(bill_screen, text ="Attach Document", command = btnAttachDocs_click)
     btnAttachDocs.grid(row=9,column=0, pady=20, padx=215, sticky=W) 
 
+    # Seperator Line
+    seperator = ttk.Separator(bill_screen, orient='horizontal')
+    seperator.grid(row=10,sticky="ew",columnspan=4)
 
+    # YTD
+    global lblYtdValue
+    lblYtdValue = tk.StringVar()
+    lblYtd = Label(bill_screen, textvariable=lblYtdValue)
+    lblYtd.grid(row=11, column=0, sticky=W, padx=5)
+
+    # Month Total
+    global lblMonthTotalValue
+    lblMonthTotalValue = tk.StringVar()
+    lblMonthTotal = Label(bill_screen, textvariable=lblMonthTotalValue)
+    lblMonthTotal.grid(row=11, column=0, sticky=W, padx=150)
+
+    # DB Path
+    global lblDbPathValue
+    lblDbPathValue = tk.StringVar()
+    lblDbPathValue.set(Ctrl.get_db_path())
+    blDbPath = Label(bill_screen, textvariable=lblDbPathValue)
+    blDbPath.grid(row=11, column=3, sticky=E)    
 
     loadMonth_event(None)
 

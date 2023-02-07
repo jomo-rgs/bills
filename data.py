@@ -27,6 +27,44 @@ def initilize_month_sql(year, month):
     conn.commit()
     conn.close() 
 
+
+def get_ytd(year, account):
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute("""
+        select sum(amount)*.01
+        from bill
+        where (account_id = :account or :account = '')
+            and year = :year
+    """,
+    {
+        'year':year,
+        'account':account
+    }) 
+
+    records = sql_cursor.fetchone()
+    conn.close()   
+    
+    return records         
+
+def get_month_total(month):
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute("""
+        select sum(amount)*.01
+        from bill
+        where month = :month
+    """,
+    {
+        'month':month,
+    }) 
+
+    records = sql_cursor.fetchone()
+    conn.close()   
+    
+    return records         
+
+
 def get_bill_list(year, month):
     # due_date2, account_id, note are hidden in treeview 
     # due_date2 is only used for order, Be sure to leave it at the end of sql

@@ -20,6 +20,9 @@ class Ctrl():
             months_choices.append(datetime.date(datetime.date.today().year, i, 1).strftime('%B'))
 
         return months_choices
+    
+    def get_db_path():
+        return data.get_db_file()    
 
     def get_year_list():
         years_choices = []
@@ -95,6 +98,15 @@ class Ctrl():
             if sys.platform == "win32":
                 subprocess.Popen(f"explorer /select,{docs_path}")
 
+    def get_ytd(year, account):
+        num = data.get_ytd(year, account)[0]
+        return f'YTD: ${num:,.2f}'
+    
+    def get_month_total(month):  
+        strMonthList = Ctrl.get_month_str_list()
+        intMonth = int(strMonthList.index(month)+1)  
+        num = data.get_month_total(intMonth)[0]
+        return f'Month Total: ${num:,.2f}'
 
     # def get_month_list():
     #     months_choices = []
