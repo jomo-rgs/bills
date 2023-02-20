@@ -100,7 +100,7 @@ class Ctrl():
 
     def get_ytd(year, account):
         num = data.get_ytd(year, account)[0]
-        return f'YTD: ${num:,.2f}'
+        return f'YTD: ${num:,.2f}' if num != None else "0.00"
     
     def get_month_total(month):  
         strMonthList = Ctrl.get_month_str_list()
