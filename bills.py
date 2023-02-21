@@ -55,7 +55,8 @@ def bills():
         #Clear Form Values
         txtAmountValue.set("")
         txtDatePaidValue.set("")
-        txtNoteValue.set("")
+        txtNote.delete('1.0',END)
+        txtNote.insert('1.0',"")
         txtHiddenAccountId.set("")
         intPaymentConfirmed.set(0)
 
@@ -103,14 +104,15 @@ def bills():
             # lblAmount[] = bill_lis[2]
             txtAmountValue.set(bill_list[2])
             txtDatePaidValue.set(bill_list[3])
-            txtNoteValue.set(bill_list[10])
+            txtNote.delete('1.0',END)
+            txtNote.insert('1.0',bill_list[10])
             txtHiddenAccountId.set(bill_list[0])
             intPaymentConfirmed.set(bill_list[11])
 
     ###############################################################        
     def save_form():
         Ctrl.save_bill(dropYear.get(), dropMonth.get(), txtHiddenAccountId.get(), txtAmountValue.get(), 
-        txtNoteValue.get(), txtDatePaidValue.get(), intPaymentConfirmed.get())
+        txtNote.get('1.0',END), txtDatePaidValue.get(), intPaymentConfirmed.get())
 
         # Refresh grid values
         selected_item = tree.selection()[0]
@@ -119,7 +121,7 @@ def bills():
         record[2] = txtAmountValue.get()
         record[3] = txtDatePaidValue.get()
         record[4] = "Confirmed" if intPaymentConfirmed.get() == 1 else "" 
-        record[10] = txtNoteValue.get()
+        record[10] = txtNote.get('1.0',END)
 
         tree.item(selected_item, text="", values=record)
         # for selected_item in tree.selection():
@@ -203,7 +205,7 @@ def bills():
 
     tree.bind('<<TreeviewSelect>>', tree_select)
 
-    tree.grid(row=2, column=0, columnspan=4, pady=5)
+    tree.grid(row=2, column=0, columnspan=4, pady=5, sticky="EW")
 
     #####################################################################
     ## Form
@@ -211,6 +213,9 @@ def bills():
 
     global txtHiddenAccountId
     txtHiddenAccountId = tk.StringVar()
+
+    Grid.rowconfigure(bill_screen, 0, weight=1)
+    Grid.columnconfigure(bill_screen, 0, weight=1)
 
     # Amount 
     global txtAmountValue, txtAmount
@@ -222,12 +227,18 @@ def bills():
     txtAmount.grid(row=4, column=0,sticky=W, padx=5)
 
     # Note
-    global txtNoteValue, txtNote
-    txtNoteValue = tk.StringVar()
+    # global txtNoteValue, txtNote
+    # txtNoteValue = tk.StringVar()
+    # lblNote = Label(bill_screen, text="Note")
+    # lblNote.grid(row=3, column=1, sticky=W, padx=5)
+    # txtNote = Entry(bill_screen,textvariable=txtNoteValue)
+    # txtNote.grid(row=4, column=1,sticky=W, padx=5, columnspan=2)
+
+    global txtNote
     lblNote = Label(bill_screen, text="Note")
     lblNote.grid(row=3, column=1, sticky=W, padx=5)
-    txtNote = Entry(bill_screen,textvariable=txtNoteValue)
-    txtNote.grid(row=4, column=1,sticky=W, padx=5, columnspan=2)
+    txtNote = Text(bill_screen, height=8, width =100)
+    txtNote.grid(row=4, column=1,sticky=W, padx=5, columnspan=2)    
 
     # Date Paid
     global txtDatePaidValue, txtDatePaid

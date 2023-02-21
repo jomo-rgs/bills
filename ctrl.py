@@ -106,7 +106,7 @@ class Ctrl():
         strMonthList = Ctrl.get_month_str_list()
         intMonth = int(strMonthList.index(month)+1)  
         num = data.get_month_total(intMonth)[0]
-        return f'Month Total: ${num:,.2f}'
+        return f'Month Total: ${num:,.2f}' if num != None else "0.00"
 
     # def get_month_list():
     #     months_choices = []
