@@ -20,7 +20,7 @@ import datetime
 def bills():
 
     print("Start Bills...")
-    version = 0.7
+    version = 0.7 
 
     width=1080
     height=500
