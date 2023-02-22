@@ -2,6 +2,7 @@
 # Version 0.4 - Released Dec 31, 2022
 # Version 0.5 - Released Jan 13, 2023
 # Version 0.6 - Released Jan 14, 2023
+# Version 0.7 - Released Feb 22, 2023
 
 
 from ast import Lambda
@@ -19,10 +20,45 @@ import datetime
 def bills():
 
     print("Start Bills...")
-    version = 0.6
+    version = 0.7
 
+    width=1080
+    height=500
+   
     bill_screen = Tk()
+
+    # Center window
+    screen_width = bill_screen.winfo_screenwidth()
+    screen_height = bill_screen.winfo_screenheight()
+    x = (screen_width/2) - (width/2)
+    y = (screen_height/2) - (height/2)
+
+    bill_screen.geometry('%dx%d+%d+%d' % (width, height, x, y))
+    bill_screen.resizable(False,False)
     bill_screen.title(f"Bills  v{version}")
+
+
+    # Parameter Frame
+    frame_parameter = Frame(bill_screen) # width, height
+    frame_parameter.grid(row=0, column=0,columnspan=4,padx=5,pady=5,sticky=NW) #padx, pady
+
+    # Grid Frame
+    frame_grid = Frame(bill_screen) # width, height
+    frame_grid.grid(row=1, column=0,sticky=EW, columnspan=4) #padx, pady
+
+    # Form Frame
+    frame_form = Frame(bill_screen)
+    frame_form.grid(row=2, column=0, sticky=NW, columnspan=4)
+
+    # Strech when screen resize
+    Grid.rowconfigure(bill_screen, 0, weight=1)
+    Grid.columnconfigure(bill_screen, 0, weight=1)
+    Grid.rowconfigure(frame_parameter, 0, weight=1)
+    Grid.columnconfigure(frame_parameter, 0, weight=1)
+    Grid.rowconfigure(frame_grid, 0, weight=1)
+    Grid.columnconfigure(frame_grid, 0, weight=4)
+    Grid.rowconfigure(frame_form, 1, weight=1)
+    Grid.columnconfigure(frame_form, 1, weight=1)
 
     Ctrl.init_db()
 
@@ -87,7 +123,7 @@ def bills():
             item = tree.item(selected_item)
             record = item['values']
 
-            print (record[0])
+            # print (record[0])
             populate_form(record)
 
             # Lock form from input
@@ -149,46 +185,49 @@ def bills():
     def btnViewDocs_click():
         Ctrl.viewDocs(txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
+
     #####################################################################
     ## Dropdown Year
     #####################################################################
-    dropYear = ttk.Combobox(bill_screen, state="readonly", value=Ctrl.get_year_list())
+    dropYear = ttk.Combobox(frame_parameter, state="readonly", value=Ctrl.get_year_list())
     dropYear.current(0)
-    dropYear.grid(row=0,column=0,pady=20, padx=25, sticky=W)
+    dropYear.grid(row=0,column=0)
+    # dropYear.pack()
     dropYear.bind("<<ComboboxSelected>>", loadMonth_event)
 
     #####################################################################
     ## Dropdown Month
     #####################################################################
-    dropMonth = ttk.Combobox(bill_screen,state="readonly", value=Ctrl.get_month_str_list())
+    dropMonth = ttk.Combobox(frame_parameter,state="readonly", value=Ctrl.get_month_str_list())
     dropMonth.current(0)
-    dropMonth.grid(row=0,column=0,pady=20, padx=215, sticky=W)
+    dropMonth.grid(row=0,column=1)
+    # dropMonth.pack()
     dropMonth.bind("<<ComboboxSelected>>", loadMonth_event)
-
 
     #####################################################################
     ## Button Initilize Month
     #####################################################################
-    btnInitilize = tkinter.Button(bill_screen, text ="Initilize", command = btnInitilize_event)
-    btnInitilize.grid(row=0,column=3)
+    btnInitilize = tkinter.Button(frame_parameter, text ="Initilize", command = btnInitilize_event)
+    btnInitilize.grid(row=0,column=2)
+    # btnInitilize.pack()
 
     #####################################################################
     ## Tree View
     #####################################################################
     global tree
-    tree = ttk.Treeview(bill_screen)
+    tree = ttk.Treeview(frame_grid)
     tree['columns'] = ("account_id","account","amount","date_paid","payment_confirmed","due_date","ytd","last_bill","last_year","note")
 
     tree.column("#0", width=0, stretch=NO)
     tree.column("account_id", width=0, stretch=NO) #Hidden
-    tree.column("account", anchor=W, width=120)
-    tree.column("amount", anchor=W, width=120)
-    tree.column("date_paid", anchor=W, width=120)
-    tree.column("payment_confirmed", anchor=W, width=155)
-    tree.column("due_date", anchor=W, width=120)
-    tree.column("ytd", anchor=W, width=120)
-    tree.column("last_bill", anchor=W, width=120)
-    tree.column("last_year", anchor=W, width=120)
+    tree.column("account", anchor=W, width=100)
+    tree.column("amount", anchor=W, width=100)
+    tree.column("date_paid", anchor=W, width=100)
+    tree.column("payment_confirmed", anchor=W, width=100)
+    tree.column("due_date", anchor=W, width=100)
+    tree.column("ytd", anchor=W, width=50)
+    tree.column("last_bill", anchor=W, width=50)
+    tree.column("last_year", anchor=W, width=50)
     tree.column("note", width=0, stretch=NO) #Hidden
 
     tree.heading("#0", text="", anchor=CENTER)
@@ -205,7 +244,7 @@ def bills():
 
     tree.bind('<<TreeviewSelect>>', tree_select)
 
-    tree.grid(row=2, column=0, columnspan=4, pady=5, sticky="EW")
+    tree.grid(row=0, column=0, columnspan=1, sticky="EW")
 
     #####################################################################
     ## Form
@@ -214,50 +253,40 @@ def bills():
     global txtHiddenAccountId
     txtHiddenAccountId = tk.StringVar()
 
-    Grid.rowconfigure(bill_screen, 0, weight=1)
-    Grid.columnconfigure(bill_screen, 0, weight=1)
-
     # Amount 
     global txtAmountValue, txtAmount
     txtAmountValue = tk.StringVar()
-    lblAmount = Label(bill_screen, text="Amount")
-    lblAmount.grid(row=3, column=0, sticky=W, padx=5)
-    txtAmount = Entry(bill_screen, textvariable=txtAmountValue)
+    lblAmount = Label(frame_form, text="Amount")
+    lblAmount.grid(row=0, column=0, sticky=NW)
+    txtAmount = Entry(frame_form, textvariable=txtAmountValue)
     # amount_txt.set("9.99")
-    txtAmount.grid(row=4, column=0,sticky=W, padx=5)
-
-    # Note
-    # global txtNoteValue, txtNote
-    # txtNoteValue = tk.StringVar()
-    # lblNote = Label(bill_screen, text="Note")
-    # lblNote.grid(row=3, column=1, sticky=W, padx=5)
-    # txtNote = Entry(bill_screen,textvariable=txtNoteValue)
-    # txtNote.grid(row=4, column=1,sticky=W, padx=5, columnspan=2)
-
-    global txtNote
-    lblNote = Label(bill_screen, text="Note")
-    lblNote.grid(row=3, column=1, sticky=W, padx=5)
-    txtNote = Text(bill_screen, height=8, width =100)
-    txtNote.grid(row=4, column=1,sticky=W, padx=5, columnspan=2)    
+    txtAmount.grid(row=1, column=0, sticky=NW)  
 
     # Date Paid
     global txtDatePaidValue, txtDatePaid
     txtDatePaidValue = tk.StringVar()
-    lblDatePaid = Label(bill_screen, text="Date Paid")
-    lblDatePaid.grid(row=5, column=0, sticky=W, padx=5)
-    txtDatePaid = Entry(bill_screen, textvariable=txtDatePaidValue)
-    txtDatePaid.grid(row=6, column=0,sticky=W, padx=5)  
+    lblDatePaid = Label(frame_form, text="Date Paid")
+    lblDatePaid.grid(row=2, column=0, sticky=NW)
+    txtDatePaid = Entry(frame_form, textvariable=txtDatePaidValue)
+    txtDatePaid.grid(row=3, column=0,sticky=NW)  
 
     # Today
     global btnToday
-    btnToday = tkinter.Button(bill_screen, text ="Today", command = set_today)
-    btnToday.grid(row=6,column=0, pady=10, padx=180, sticky=W)     
+    btnToday = tkinter.Button(frame_form, text ="Today", command = set_today)
+    btnToday.grid(row=3,column=1, sticky=NW)     
+
+    # Note
+    global txtNote
+    lblNote = Label(frame_form, text="Note")
+    lblNote.grid(row=0, column=2, sticky=NW, padx=10)
+    txtNote = Text(frame_form, width=112, height=8)
+    txtNote.grid(row=1, column=2,sticky=NW, padx=10, rowspan=4) 
 
     # Payment Confirmed 
     global intPaymentConfirmed, chkPaymentConfirmed
     intPaymentConfirmed = tk.IntVar()
-    chkPaymentConfirmed = Checkbutton(bill_screen, variable=intPaymentConfirmed, text="Payment Confirmed", onvalue=1, offvalue=0 )
-    chkPaymentConfirmed.grid(row=8,column=0, pady=10, padx=5, sticky=W) 
+    chkPaymentConfirmed = Checkbutton(frame_form, variable=intPaymentConfirmed, text="Payment Confirmed", onvalue=1, offvalue=0 )
+    chkPaymentConfirmed.grid(row=4,column=0, pady=10, padx=5, sticky=W) 
 
     # Save
     global btnSave

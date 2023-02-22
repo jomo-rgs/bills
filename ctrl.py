@@ -93,7 +93,7 @@ class Ctrl():
             # mac
             if sys.platform == "darwin":
                 docs_path = docs_path + "/"
-                call(["open", docs_path])
+                subprocess.call(["open", docs_path])
             # windows
             if sys.platform == "win32":
                 subprocess.Popen(f"explorer /select,{docs_path}")
