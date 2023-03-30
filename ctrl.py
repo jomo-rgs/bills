@@ -31,8 +31,7 @@ class Ctrl():
 
         return years_choices
     
-    def get_account_list():
-        return data.query_distinct_account_name()
+
 
     def initilize_month(intYear, strMonth):
         strMonthList = Ctrl.get_month_str_list()
