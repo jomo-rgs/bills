@@ -97,18 +97,7 @@ def get_bill_list(year, month):
     
     return records  
 
-def query_distinct_account_name() -> tuple:
-    conn = sqlite3.connect(get_db_file())
-    sql_cursor = conn.cursor()
-    sql_cursor.execute("""
-        select account.name from account order by name
-    """,
-    {})
-    
-    records = sql_cursor.fetchall()
-    conn.close()   
-    
-    return tuple(records)  
+ 
 
 #####################################################
 #####################################################    
