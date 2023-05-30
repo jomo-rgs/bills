@@ -15,7 +15,7 @@ def initilize_month_sql(year, month):
         insert into bill (amount, account_id,year,month,payment_confirmed)
         select def_amt, id,:year,:month, 0
         from account
-        where (ifnull(month,'') = '' or  month = :month)
+        where (ifnull(month,0) = 0 or  month = :month)
         and ifnull(active,0) = 1
         and id not in (select account_id from  bill where month = :month and year = :year);
     """,
