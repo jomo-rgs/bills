@@ -3,17 +3,27 @@ import services
 import sqlite3
 
 class Accounts:
-          
-    def get_all_accounts(self) -> list:
-        
+
+    def __init__(self, where: str, order_by: str):
+        self._where = where
+        self._order_by = order_by
+        self._select_account = None
+
         data = Data()
 
-        accounts = list()
-        print()
-        for record in data.query_all_accounts():
-            accounts.append(Account(record))
+        self._accounts = list()
+        for record in data.query(self._where, self._order_by):
+            self._accounts.append(Account(record))
 
-        return accounts
+    def get_account_at(self, i: int) -> Account:
+        self._select_account = self._accounts[i]
+        return self._accounts[i]
+    
+    def get_selected_account(self):
+        return self._select_account
+
+    def get_accounts(self) -> list:
+        return self._accounts
 
 
 
@@ -28,11 +38,20 @@ class Accounts:
 
 class Data:
 
-    def query_all_accounts(self) -> tuple:
+    def query(self, where: str, order_by: str) -> tuple:
+        if where == None:
+            where = ""
+        else:
+            where = f"WHERE {where}"
+        if order_by == None:
+            order_by = "ORDER BY name"
+        else:
+            order_by = f"ORDER BY {order_by}"
+
         conn = sqlite3.connect(services.get_db_file())
         sql_cursor = conn.cursor()
-        sql_cursor.execute("""
-            select * from account order by name
+        sql_cursor.execute(f"""
+            select * from account {where} {order_by}
         """,
         {})
         

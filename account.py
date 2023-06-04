@@ -11,15 +11,15 @@ class Account:
     # CONSTRUCTOR
     #########################
     def __init__(self, account: tuple):
-        if account == None:
-            self.id = None 
-            self.name = ''
-            self.def_amt = 0.00
-            self.month = 0
-            self.active = 0
-            self.due_dom = 0
-            self.note = ''
-        else:
+        self.id = None 
+        self.name = ''
+        self.def_amt = 0.00
+        self.month = 0
+        self.active = 0
+        self.due_dom = 0
+        self.note = ''
+
+        if account != None:
             self.set_id(account[0])
             self.set_name(account[1])
             self.set_def_amt(account[2])
@@ -54,12 +54,14 @@ class Account:
     def set_note(self, x):
         self.note = x
         
+
     ###############################
     ## SAVE
     ###############################
     def save(self) -> list:
 
         data = Data()
+        print(self.id)
         if self.id == None:
             data.insert(self)   
         else: 

@@ -8,9 +8,35 @@ from accounts import Accounts
 
 from ctrl import Ctrl
 
+def event_acct_selected(event: tkinter.Event):
+    widget = event.widget
+    account = accounts.get_account_at(widget.current())
+    txtNameValue.set(account.name)
+    amt = int(account.def_amt) * .01
+    txtDefaultlValue.set( "{:.2f}".format(amt) )
+    dropMonth.current(account.month)
+    dropActive.current(account.active)
+    txtDOMValue.set(account.due_dom)
+    txtNote.delete(1.0,END)
+    txtNote.insert(1.0, account.note if account.note != None else "")
+
+    txtName['state'] = 'normal'
+    txtDefault['state'] = 'normal'
+    txtDOM['state'] = 'normal'
+    txtNote['state'] = 'normal'
+    dropActive['state'] = 'normal'
+    dropMonth['state'] = 'normal'
+    btnOk['state'] = 'normal'
+
 def event_click_ok():
-    account = Account(None)
-    account.set_id(None) 
+
+    if accounts != None:
+        account = accounts.get_selected_account()
+    else:
+        account = Account(None)
+        account.set_id(None) 
+        account.set_name(txtNameValue.get())
+
     account.set_name(txtNameValue.get())
 
     # The amt is stored as a string with no decial. 
@@ -24,7 +50,7 @@ def event_click_ok():
     #===============================================
 
     account.set_month(dropMonth.current())
-    account.set_active(dropMonth.current())
+    account.set_active(dropActive.current())
     account.set_due_dom(txtDOMValue.get())
     account.set_note(txtNote.get("1.0",END))
 
@@ -37,49 +63,67 @@ def event_click_cancel():
 
 
 def account_form(mode: int):
+    # Mode 1: New 2: Edit
 
-    global screen, selected_account
+    global screen, accounts, query_accounts
+
+    width=230
+    height=450
+   
     screen = Tk()
-    accounts = Accounts()
+
+    # Center window
+    screen_width = screen.winfo_screenwidth()
+    screen_height = screen.winfo_screenheight()
+    x = (screen_width/2) - (width/2)
+    y = (screen_height/2) - (height/2)
+
+    screen.geometry('%dx%d+%d+%d' % (width, height, x, y))
+    screen.resizable(False,False)
+    screen.title(f"Account")
+
+    accounts = Accounts(None, None)
     
-    if mode != 1:
+    if mode == 2:
         lblName = Label(screen, text="Account:")
-        lblName.grid(row=0, column=0, sticky=NW)
-        # dropAccounts = ttk.Combobox(screen, state="readonly", value=ct.get_account_list())
-        dropAccounts = ttk.Combobox(screen, state="readonly", value=accounts.get_all_accounts())
-        dropAccounts.grid(row=0, column=0, padx=100, sticky='NW')
+        lblName.grid(row=0, column=0, sticky=NW, padx=10)
+        query_accounts = [x.name for x in accounts.get_accounts()]
+        dropAccounts = ttk.Combobox(screen, state="readonly", value=query_accounts)
+        dropAccounts.grid(row=1, column=0, padx=10, sticky='NW')
+        dropAccounts.bind("<<ComboboxSelected>>", event_acct_selected )
 
     # Name 
     global txtNameValue, txtName
     txtNameValue = tk.StringVar()
     # txtNameValue.set(selected_account.name)
     lblName = Label(screen, text="Account Name:")
-    lblName.grid(row=1, column=0, sticky=NW)
+    lblName.grid(row=2, column=0, sticky=NW, padx=10)
     txtName = Entry(screen, textvariable=txtNameValue)
-    txtName.grid(row=2, column=0, sticky=NW)  
+    txtName.grid(row=3, column=0, sticky=NW, padx=10)  
 
     # Default Value
     global txtDefaultlValue, txtDefault
     txtDefaultlValue = tk.StringVar()
     # txtDefaultlValue.set(selected_account.def_amt)
     lblDefault = Label(screen, text="Default Amount:")
-    lblDefault.grid(row=3, column=0, sticky=NW)
+    lblDefault.grid(row=4, column=0, sticky=NW, padx=10)
     txtDefault = Entry(screen, textvariable=txtDefaultlValue)
-    txtDefault.grid(row=4, column=0, sticky=NW)  
+    txtDefault.grid(row=5, column=0, sticky=NW, padx=10)  
 
     # Month
     lblMonths = Label(screen, text="Months:")
-    lblMonths.grid(row=5, column=0, sticky=W)
+    lblMonths.grid(row=6, column=0, sticky=W, padx=10)
     global dropMonth
     dropMonth = ttk.Combobox(screen, state="readonly")
     dropMonth['values'] = tuple(calendar.month_name)
-    dropMonth.grid(row=6,column=0,sticky="W")
+    dropMonth.grid(row=7,column=0,sticky="W", padx=10)
 
     # Active
     lblActive = Label(screen, text="Active:")
-    lblActive.grid(row=7, column=0, sticky=NW)
+    lblActive.grid(row=8, column=0, sticky=NW, padx=10)
+    global dropActive
     dropActive = ttk.Combobox(screen, state="readonly", value=('No','Yes'))
-    dropActive.grid(row=8,column=0,sticky="W")
+    dropActive.grid(row=9,column=0,sticky="W", padx=10)
     dropActive.current(1)
 
     # Due Day of Month
@@ -87,33 +131,35 @@ def account_form(mode: int):
     txtDOMValue = tk.StringVar()
     # txtDOMValue.set(selected_account.due_dom)
     lblDOM = Label(screen, text="Day Due:")
-    lblDOM.grid(row=9, column=0, sticky=W)
+    lblDOM.grid(row=10, column=0, sticky=W, padx=10)
     txtDOM = Entry(screen, textvariable=txtDOMValue)
-    txtDOM.grid(row=10, column=0, sticky=NW)  
+    txtDOM.grid(row=11, column=0, sticky=NW, padx=10)  
 
     # Note
     global txtNote
     lblNote = Label(screen, text="Note")
-    lblNote.grid(row=11, column=0, sticky=NW, padx=10)
-    txtNote = Text(screen, width=80, height=8)
-    txtNote.grid(row=12, column=0,sticky=NW, padx=10, rowspan=4) 
+    lblNote.grid(row=12, column=0, sticky=NW, padx=10)
+    txtNote = Text(screen, width=30, height=6)
+    txtNote.grid(row=13, column=0,sticky=NW, padx=10, rowspan=1) 
 
     # Ok
+    global btnOk
     btnOk = tkinter.Button(screen, text ="Ok", command = event_click_ok)
-    btnOk.grid(row=16,column=0, sticky=NE)
+    btnOk.grid(row=17,column=0, sticky=NE, padx=10)
 
     # Cancel
-    btnOk = tkinter.Button(screen, text ="Cancel", command = event_click_cancel)
-    btnOk.grid(row=16,column=1, sticky=NE)
+    global btnCancel
+    btnCancel = tkinter.Button(screen, text ="Cancel", command = event_click_cancel)
+    btnCancel.grid(row=17,column=0, sticky=NE, padx=60)
 
-    if mode == 1:
-        pass
-    else:
-        pass
-
-        #     dropAccountsValues = list()
-        # for item in accounts.get_all_accounts():
-        #     dropAccountsValues.append(item.name)
+    if mode == 2:
+        txtName['state'] = 'disabled'
+        txtDefault['state'] = 'disabled'
+        txtDOM['state'] = 'disabled'
+        txtNote['state'] = 'disabled'
+        dropActive['state'] = 'disabled'
+        dropMonth['state'] = 'disabled'
+        btnOk['state'] = 'disabled'
 
     screen.mainloop()
 
@@ -122,4 +168,5 @@ def account_form(mode: int):
 #################################
 #################################    
 if __name__ == '__main__':
-    account_form(1)
+    # 1: New, 2: Edit
+    account_form(2)
