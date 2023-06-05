@@ -9,17 +9,6 @@ from accounts import Accounts
 from ctrl import Ctrl
 
 def event_acct_selected(event: tkinter.Event):
-    widget = event.widget
-    account = accounts.get_account_at(widget.current())
-    txtNameValue.set(account.name)
-    amt = int(account.def_amt) * .01
-    txtDefaultlValue.set( "{:.2f}".format(amt) )
-    dropMonth.current(account.month)
-    dropActive.current(account.active)
-    txtDOMValue.set(account.due_dom)
-    txtNote.config(state='normal')
-    txtNote.delete(1.0,END)
-    txtNote.insert(1.0, account.note if account.note != None else "")
 
     txtName['state'] = 'normal'
     txtDefault['state'] = 'normal'
@@ -28,6 +17,19 @@ def event_acct_selected(event: tkinter.Event):
     dropActive['state'] = 'readonly'
     dropMonth['state'] = 'readonly'
     btnOk['state'] = 'normal'
+
+    widget = event.widget
+    account = accounts.get_account_at(widget.current())
+    txtNameValue.set(account.name)
+    amt = int(account.def_amt) * .01
+    txtDefaultlValue.set( "{:.2f}".format(amt) )
+    dropMonth.current(account.month)
+    dropActive.current(account.active)
+    txtDOMValue.set(account.due_dom)
+    txtNote.delete(1.0,END)
+    txtNote.insert(1.0, account.note if account.note != None else "")
+
+
 
 def event_click_ok():
 
