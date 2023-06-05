@@ -13,6 +13,7 @@ import tkinter as tk
 import tkinter
 from tkinter.messagebox import showinfo
 from tkinter import filedialog as fd
+import account_form
 
 from ctrl import Ctrl
 import datetime
@@ -37,8 +38,40 @@ def bills():
     bill_screen.resizable(False,False)
     bill_screen.title(f"Bills  v{version}")
 
+    # Main Menu
+    # bill_screen.option_add('*tearOff', FALSE)
+    # win = Toplevel(bill_screen)
+    # menubar = Menu(win)
+    # menu_file = Menu(menubar)
+    # menu_edit = Menu(menubar)
+    # menubar.add_cascade(menu=menu_file, label='File')
+    # menubar.add_cascade(menu=menu_edit, label='Edit')
 
-    # Parameter Frame
+    # menu_file.add_command(label='New')
+    # menu_file.add_command(label='Open...')
+    # menu_file.add_command(label='Close')
+
+    # frame_menu = Frame(bill_screen) # width, height
+    # frame_menu.grid(row=0, column=0,columnspan=4,padx=5,pady=5,sticky=NW) #padx, pady
+
+    # menu = Menu(frame_menu)
+    # frame_menu.config(menu=menu)
+    
+    # file_menu = Menu(menu)
+    # file_menu.add_command(label='Exit')
+    # menu.add_cascade(label='File', menu=file_menu)
+
+    # edit_menu = Menu(menu)
+    # edit_menu.add_command(label='Edit Accounts')
+    # edit_menu.add_cascade(label='Add Account')
+    # menu.add_cascade(label='Edit', menu=edit_menu)
+
+    
+
+
+
+
+    # # Parameter Frame
     frame_parameter = Frame(bill_screen) # width, height
     frame_parameter.grid(row=0, column=0,columnspan=4,padx=5,pady=5,sticky=NW) #padx, pady
 
@@ -141,6 +174,7 @@ def bills():
             txtAmountValue.set(bill_list[2])
             txtDatePaidValue.set(bill_list[3])
             txtNote.delete('1.0',END)
+            txtNote['state'] = 'normal'
             txtNote.insert('1.0',bill_list[10])
             txtHiddenAccountId.set(bill_list[0])
             intPaymentConfirmed.set(bill_list[11])
@@ -185,6 +219,17 @@ def bills():
     def btnViewDocs_click():
         Ctrl.viewDocs(txtHiddenAccountId.get(), dropYear.get(), dropMonth.get())
 
+    ###############################################################
+    def btnNewAccount_event():
+        account_form.account_form(1)
+
+    ###############################################################
+    def btnEditAccount_event():
+        account_form.account_form(2)
+
+########################################################
+## Main Screen
+########################################################
 
     #####################################################################
     ## Dropdown Year
@@ -210,6 +255,19 @@ def bills():
     btnInitilize = tkinter.Button(frame_parameter, text ="Initilize", command = btnInitilize_event)
     btnInitilize.grid(row=0,column=2)
     # btnInitilize.pack()
+
+    #####################################################################
+    ## Button New Account
+    #####################################################################
+    btnNewAccount = tkinter.Button(frame_parameter, text ="New Account", command = btnNewAccount_event)
+    btnNewAccount.grid(row=0,column=3,sticky="NE")
+
+    #####################################################################
+    ## Button Edit Accounts
+    #####################################################################
+    btnEditAccount = tkinter.Button(frame_parameter, text ="Edit Accounts", command = btnEditAccount_event)
+    btnEditAccount.grid(row=0,column=4,sticky="NE")
+
 
     #####################################################################
     ## Tree View

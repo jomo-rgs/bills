@@ -17,6 +17,7 @@ def event_acct_selected(event: tkinter.Event):
     dropMonth.current(account.month)
     dropActive.current(account.active)
     txtDOMValue.set(account.due_dom)
+    txtNote.config(state='normal')
     txtNote.delete(1.0,END)
     txtNote.insert(1.0, account.note if account.note != None else "")
 
@@ -24,19 +25,18 @@ def event_acct_selected(event: tkinter.Event):
     txtDefault['state'] = 'normal'
     txtDOM['state'] = 'normal'
     txtNote['state'] = 'normal'
-    dropActive['state'] = 'normal'
-    dropMonth['state'] = 'normal'
+    dropActive['state'] = 'readonly'
+    dropMonth['state'] = 'readonly'
     btnOk['state'] = 'normal'
 
 def event_click_ok():
 
-    if accounts != None:
-        account = accounts.get_selected_account()
-    else:
+    account = accounts.get_selected_account()
+
+    if account == None:
         account = Account(None)
         account.set_id(None) 
-        account.set_name(txtNameValue.get())
-
+        
     account.set_name(txtNameValue.get())
 
     # The amt is stored as a string with no decial. 
@@ -141,6 +141,9 @@ def account_form(mode: int):
     lblNote.grid(row=12, column=0, sticky=NW, padx=10)
     txtNote = Text(screen, width=30, height=6)
     txtNote.grid(row=13, column=0,sticky=NW, padx=10, rowspan=1) 
+
+    # txtNote.delete(1.0, END)
+    # txtNote.insert(1.0, "nothing...")
 
     # Ok
     global btnOk

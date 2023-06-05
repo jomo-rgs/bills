@@ -1,6 +1,7 @@
 import tkinter as tk
 import sqlite3
 import services
+import re
 
 ###########################
 ## CLASS ACCOUNT
@@ -34,22 +35,28 @@ class Account:
 
     def set_name(self, x):
         self.name = x.strip()
+        if len(self.name) < 1:
+            self.name = "<blank>"
 
-    def set_def_amt(self, x):
-        if x != None:
-            self.def_amt = float(x)
+    def set_def_amt(self, x: str):
+        if isinstance(x,str):
+            x = re.sub("[^0-9]", "", x)
+            
+        self.def_amt = abs(float(x))
 
-    def set_month(self, x):
+    def set_month(self, x: int):
         if x != None:
             self.month = int(x)
 
-    def set_active(self, x):
+    def set_active(self, x: int):
         if x != None:
             self.active = int(x)
 
-    def set_due_dom(self, x):
-        if x != None:
-            self.due_dom = x
+    def set_due_dom(self, x: str):
+        if isinstance(x, str):
+            x = re.sub("[^0-9]", "", x)
+
+        self.due_dom = int(x)
 
     def set_note(self, x):
         self.note = x
@@ -58,14 +65,15 @@ class Account:
     ###############################
     ## SAVE
     ###############################
-    def save(self) -> list:
+    def save(self):              
 
         data = Data()
-        print(self.id)
+
         if self.id == None:
             data.insert(self)   
         else: 
             data.update(self) 
+
 
     ###############################
     ## TO_STRING
