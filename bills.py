@@ -170,7 +170,6 @@ def bills():
 
     ###############################################################
     def populate_form(bill_list):
-            # lblAmount[] = bill_lis[2]
             txtAmountValue.set(bill_list[2])
             txtDatePaidValue.set(bill_list[3])
             txtNote.delete('1.0',END)
@@ -181,7 +180,19 @@ def bills():
 
     ###############################################################        
     def save_form():
-        Ctrl.save_bill(dropYear.get(), dropMonth.get(), txtHiddenAccountId.get(), txtAmountValue.get(), 
+
+        t = txtAmountValue.get()
+        if "." not in t:
+            t = t + "00"
+        elif "." in t:
+            tt = t.split(".") 
+            t = tt[0] + tt[1].rjust(2,'0')
+        #txtAmountValue.set(t)
+
+        amt = int(t) * .01
+        txtAmountValue.set( "{:.2f}".format(amt) )
+
+        Ctrl.save_bill(dropYear.get(), dropMonth.get(), txtHiddenAccountId.get(), t, 
         txtNote.get('1.0',END), txtDatePaidValue.get(), intPaymentConfirmed.get())
 
         # Refresh grid values
@@ -192,6 +203,8 @@ def bills():
         record[3] = txtDatePaidValue.get()
         record[4] = "Confirmed" if intPaymentConfirmed.get() == 1 else "" 
         record[10] = txtNote.get('1.0',END)
+
+
 
         tree.item(selected_item, text="", values=record)
         # for selected_item in tree.selection():
