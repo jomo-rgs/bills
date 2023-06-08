@@ -18,13 +18,15 @@ import account_form
 from ctrl import Ctrl
 import datetime
 
+# Version 0.8 - Released on Feb 22, 2023
+
 def bills():
 
     print("Start Bills...")
-    version = 0.7 
+    version = 0.8 
 
     width=1080
-    height=500
+    height=540
    
     bill_screen = Tk()
 
@@ -344,7 +346,7 @@ def bills():
     # Today
     global btnToday
     btnToday = tkinter.Button(frame_form, text ="Today", command = set_today)
-    btnToday.grid(row=3,column=1, sticky=NW)     
+    btnToday.grid(row=4, column=0, sticky=NW)     
 
     # Note
     global txtNote
@@ -357,7 +359,7 @@ def bills():
     global intPaymentConfirmed, chkPaymentConfirmed
     intPaymentConfirmed = tk.IntVar()
     chkPaymentConfirmed = Checkbutton(frame_form, variable=intPaymentConfirmed, text="Payment Confirmed", onvalue=1, offvalue=0 )
-    chkPaymentConfirmed.grid(row=4,column=0, pady=10, padx=5, sticky=W) 
+    chkPaymentConfirmed.grid(row=5,column=0, pady=10, padx=5, sticky=W) 
 
     # Save
     global btnSave
