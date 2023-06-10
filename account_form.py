@@ -84,9 +84,11 @@ def account_form(mode: int):
     screen.resizable(False,False)
     screen.title(f"Account")
 
-    accounts = Accounts(None, None)
+    
     
     if mode == 2:
+        accounts = Accounts(None, None)
+
         lblName = Label(screen, text="Account:")
         lblName.grid(row=0, column=0, sticky=NW, padx=10)
         query_accounts = [x.name for x in accounts.get_accounts()]

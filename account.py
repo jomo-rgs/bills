@@ -21,6 +21,7 @@ class Account:
         self.note = ''
 
         if account != None:
+            print(account)
             self.set_id(account[0])
             self.set_name(account[1])
             self.set_def_amt(account[2])
@@ -45,12 +46,20 @@ class Account:
         self.def_amt = abs(float(x))
 
     def set_month(self, x: int):
-        if x != None:
-            self.month = int(x)
+        if x == None: return
+        if type(x) == str:
+            if len(x) > 0:
+                self.month = int(x)
+        elif type(x) == int:
+            self.month = x
 
     def set_active(self, x: int):
-        if x != None:
-            self.active = int(x)
+        if x == None: return
+        if type(x) == str:
+            if len(x) > 0:
+                self.active = int(x)
+        elif type(x) == int:
+            self.active = x
 
     def set_due_dom(self, x: str):
         if isinstance(x, str):
