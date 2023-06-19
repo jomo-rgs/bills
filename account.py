@@ -45,7 +45,7 @@ class Account:
             
         self.def_amt = abs(float(x))
 
-    def set_month(self, x: int):
+    def set_month(self, x: str):
         if x == None: return
         if type(x) == str:
             if len(x) > 0:
@@ -53,19 +53,24 @@ class Account:
         elif type(x) == int:
             self.month = x
 
-    def set_active(self, x: int):
+    def set_active(self, x: str):
         if x == None: return
         if type(x) == str:
             if len(x) > 0:
+                x = re.sub("[^0-9]", "", x)
                 self.active = int(x)
         elif type(x) == int:
             self.active = x
 
     def set_due_dom(self, x: str):
         if isinstance(x, str):
-            x = re.sub("[^0-9]", "", x)
+            if len(x) > 0:
+                x = re.sub("[^0-9]", "", x)
+                self.due_dom = int(x)
+        elif type(x) == int:
+            self.due_dom = int(x)
 
-        self.due_dom = int(x)
+        
 
     def set_note(self, x):
         self.note = x

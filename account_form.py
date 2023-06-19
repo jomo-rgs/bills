@@ -20,25 +20,29 @@ def event_acct_selected(event: tkinter.Event):
 
     widget = event.widget
     account = accounts.get_account_at(widget.current())
-    txtNameValue.set(account.name)
+    txtName.delete(0,END)
+    txtName.insert(0,account.name)
     amt = int(account.def_amt) * .01
-    txtDefaultlValue.set( "{:.2f}".format(amt) )
+    txtDefault.delete(0,END)
+    txtDefault.insert(0,"{:.2f}".format(amt))
     dropMonth.current(account.month)
     dropActive.current(account.active)
     txtDOMValue.set(account.due_dom)
     txtNote.delete(1.0,END)
     txtNote.insert(1.0, account.note if account.note != None else "")
 
+    screen.update()
+
 
 
 def event_click_ok():
 
-    account = accounts.get_selected_account()
-
-    if account == None:
+    if mode == 1:                   # New
         account = Account(None)
         account.set_id(None) 
-        
+    else:                           # Edit
+        account = accounts.get_selected_account()
+
     account.set_name(txtNameValue.get())
 
     # The amt is stored as a string with no decial. 
@@ -64,10 +68,12 @@ def event_click_cancel():
     screen.destroy()
 
 
-def account_form(mode: int):
+def account_form(p_mode: int):
     # Mode 1: New 2: Edit
 
-    global screen, accounts, query_accounts
+    global mode, screen, accounts, query_accounts
+
+    mode = p_mode
 
     width=230
     height=450
@@ -84,8 +90,6 @@ def account_form(mode: int):
     screen.resizable(False,False)
     screen.title(f"Account")
 
-    
-    
     if mode == 2:
         accounts = Accounts(None, None)
 
@@ -97,21 +101,17 @@ def account_form(mode: int):
         dropAccounts.bind("<<ComboboxSelected>>", event_acct_selected )
 
     # Name 
-    global txtNameValue, txtName
-    txtNameValue = tk.StringVar()
-    # txtNameValue.set(selected_account.name)
+    global txtName
     lblName = Label(screen, text="Account Name:")
     lblName.grid(row=2, column=0, sticky=NW, padx=10)
-    txtName = Entry(screen, textvariable=txtNameValue)
+    txtName = Entry(screen)
     txtName.grid(row=3, column=0, sticky=NW, padx=10)  
 
     # Default Value
-    global txtDefaultlValue, txtDefault
-    txtDefaultlValue = tk.StringVar()
-    # txtDefaultlValue.set(selected_account.def_amt)
+    global txtDefault
     lblDefault = Label(screen, text="Default Amount:")
     lblDefault.grid(row=4, column=0, sticky=NW, padx=10)
-    txtDefault = Entry(screen, textvariable=txtDefaultlValue)
+    txtDefault = Entry(screen)
     txtDefault.grid(row=5, column=0, sticky=NW, padx=10)  
 
     # Month
