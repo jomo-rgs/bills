@@ -3,6 +3,7 @@
 # Version 0.5 - Released Jan 13, 2023
 # Version 0.6 - Released Jan 14, 2023
 # Version 0.7 - Released Feb 22, 2023
+# Version 0.8.1 - Released Jul 02, 2023
 
 
 from ast import Lambda
@@ -23,7 +24,7 @@ import datetime
 def bills():
 
     print("Start Bills...")
-    version = "0.8.1 (BETA)"
+    version = "0.8.1"
 
     width=1080
     height=540
