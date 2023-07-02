@@ -32,7 +32,7 @@ def event_acct_selected(event: tkinter.Event):
     txtNote.delete(1.0,END)
     txtNote.insert(1.0, account.note if account.note != None else "")
 
-    screen.update()
+    screen_root.update()
 
 
 
