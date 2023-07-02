@@ -27,7 +27,8 @@ def event_acct_selected(event: tkinter.Event):
     txtDefault.insert(0,"{:.2f}".format(amt))
     dropMonth.current(account.month)
     dropActive.current(account.active)
-    txtDOMValue.set(account.due_dom)
+    txtDOM.delete(0,END)
+    txtDOM.insert(0,account.due_dom)
     txtNote.delete(1.0,END)
     txtNote.insert(1.0, account.note if account.note != None else "")
 
@@ -43,10 +44,10 @@ def event_click_ok():
     else:                           # Edit
         account = accounts.get_selected_account()
 
-    account.set_name(txtNameValue.get())
+    account.set_name(txtName.get().upper())
 
     # The amt is stored as a string with no decial. 
-    t = txtDefaultlValue.get()
+    t = txtDefault.get()
     if "." not in t:
         t = t + "00"
     elif "." in t:
@@ -57,28 +58,39 @@ def event_click_ok():
 
     account.set_month(dropMonth.current())
     account.set_active(dropActive.current())
-    account.set_due_dom(txtDOMValue.get())
+    account.set_due_dom(txtDOM.get())
     account.set_note(txtNote.get("1.0",END))
 
     account.save()
     
-    screen.destroy()
+    screen_root.destroy()
 
 def event_click_cancel():
-    screen.destroy()
+    screen_root.destroy()
 
 
 def account_form(p_mode: int):
     # Mode 1: New 2: Edit
 
-    global mode, screen, accounts, query_accounts
+    global mode, screen_root, accounts, query_accounts
 
     mode = p_mode
 
     width=230
     height=450
    
-    screen = Tk()
+    screen_root = Tk()
+
+    screen = Frame(screen_root) # width, height
+    screen.grid(row=0, column=0,sticky=EW, columnspan=4) #padx, pady
+
+    btn_frame = Frame(screen_root) # width, height
+    btn_frame.grid(row=1, column=0,columnspan=4,padx=5,pady=5,sticky=NW) #padx, pady  
+    
+    Grid.rowconfigure(screen, 0, weight=1)
+    Grid.columnconfigure(screen, 0, weight=1)
+    Grid.rowconfigure(btn_frame, 0, weight=2)
+    Grid.columnconfigure(btn_frame, 0, weight=2)    
 
     # Center window
     screen_width = screen.winfo_screenwidth()
@@ -86,12 +98,12 @@ def account_form(p_mode: int):
     x = (screen_width/2) - (width/2)
     y = (screen_height/2) - (height/2)
 
-    screen.geometry('%dx%d+%d+%d' % (width, height, x, y))
-    screen.resizable(False,False)
-    screen.title(f"Account")
+    screen_root.geometry('%dx%d+%d+%d' % (width, height, x, y))
+    screen_root.resizable(False,False)
+    screen_root.title(f"Account")
 
     if mode == 2:
-        accounts = Accounts(None, None)
+        accounts = Accounts(None, 'name')
 
         lblName = Label(screen, text="Account:")
         lblName.grid(row=0, column=0, sticky=NW, padx=10)
@@ -131,12 +143,10 @@ def account_form(p_mode: int):
     dropActive.current(1)
 
     # Due Day of Month
-    global txtDOMValue, txtDOM
-    txtDOMValue = tk.StringVar()
-    # txtDOMValue.set(selected_account.due_dom)
+    global txtDOM
     lblDOM = Label(screen, text="Day Due:")
     lblDOM.grid(row=10, column=0, sticky=W, padx=10)
-    txtDOM = Entry(screen, textvariable=txtDOMValue)
+    txtDOM = Entry(screen)
     txtDOM.grid(row=11, column=0, sticky=NW, padx=10)  
 
     # Note
@@ -151,13 +161,13 @@ def account_form(p_mode: int):
 
     # Ok
     global btnOk
-    btnOk = tkinter.Button(screen, text ="Ok", command = event_click_ok)
-    btnOk.grid(row=17,column=0, sticky=NE, padx=10)
+    btnOk = tkinter.Button(btn_frame, text ="Ok", command = event_click_ok)
+    btnOk.grid(row=1,column=1, sticky=N)
 
     # Cancel
     global btnCancel
-    btnCancel = tkinter.Button(screen, text ="Cancel", command = event_click_cancel)
-    btnCancel.grid(row=17,column=0, sticky=NE, padx=60)
+    btnCancel = tkinter.Button(btn_frame, text ="Cancel", command = event_click_cancel)
+    btnCancel.grid(row=1,column=0, sticky=N)
 
     if mode == 2:
         txtName['state'] = 'disabled'
