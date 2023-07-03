@@ -19,7 +19,7 @@ import account_form
 from ctrl import Ctrl
 import datetime
 
-# Version 0.8 - Released on Feb 22, 2023
+
 
 def bills():
 
@@ -253,20 +253,32 @@ def bills():
     #####################################################################
     ## Dropdown Year
     #####################################################################
-    dropYear = ttk.Combobox(frame_parameter, state="readonly", value=Ctrl.get_year_list())
+    years = Ctrl.get_year_list()
+    dropYear = ttk.Combobox(frame_parameter, state="readonly", value=years)
     dropYear.current(0)
     dropYear.grid(row=0,column=0)
     # dropYear.pack()
     dropYear.bind("<<ComboboxSelected>>", loadMonth_event)
 
+    # Set the drop down to the current year
+    current_year_index = years.index(datetime.date.today().year)
+    dropYear.current(current_year_index)
+
+
     #####################################################################
     ## Dropdown Month
     #####################################################################
-    dropMonth = ttk.Combobox(frame_parameter,state="readonly", value=Ctrl.get_month_str_list())
+    months = Ctrl.get_month_str_list()
+    dropMonth = ttk.Combobox(frame_parameter,state="readonly", value=months)
     dropMonth.current(0)
     dropMonth.grid(row=0,column=1)
     # dropMonth.pack()
     dropMonth.bind("<<ComboboxSelected>>", loadMonth_event)
+
+    current_month_int = datetime.date.today().month
+    current_month_str = datetime.date(datetime.date.today().year, current_month_int, 1).strftime('%B')
+    current_month_index = months.index(current_month_str)
+    dropMonth.current(current_month_index)
 
     #####################################################################
     ## Button Initilize Month
