@@ -139,6 +139,9 @@ def create_db():
             "month"	INTEGER,
             "active"	INTEGER,
             "due_dom"	INTEGER,
+            "due_dom_offset INTEGER,
+            "auto_pay"  INTEGER,
+            'auto_confirm" INTEGER,
             "note"	TEXT,
             PRIMARY KEY("id")
         )
@@ -156,6 +159,17 @@ def create_db():
             "note"	TEXT,
             "year"	INTEGER NOT NULL,
             "month"	INTEGER NOT NULL
+        )
+    """)
+    conn.commit()
+
+
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute("""
+        CREATE TABLE if not exists "settings" (
+            "key"	TEXT NOT NULL,
+            "value"	TEXT
         )
     """)
     conn.commit()
