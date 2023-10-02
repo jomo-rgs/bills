@@ -18,6 +18,7 @@ import account_form
 
 from ctrl import Ctrl
 import datetime
+import database_upgrade
 
 
 
@@ -25,6 +26,8 @@ def bills():
 
     print("Start Bills...")
     version = "0.8.1"
+    database_upgrade.upgrade()
+
 
     width=1080
     height=540

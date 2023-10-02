@@ -7,6 +7,74 @@ def get_db_file():
     return os.path.join(os.getcwd(), "bills.db")
 
 #####################################################
+#####################################################   
+def does_table_exist(table_name):
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute(f"""
+        SELECT count(*) FROM sqlite_master WHERE type='table' AND name='{table_name}';
+    """)
+
+    records = sql_cursor.fetchone()
+    count = records[0]
+    conn.close()  
+
+    if count >= 1:
+        return True
+    else:
+        return False
+
+#####################################################
+#####################################################   
+def get_setting(key):
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute(f"""
+        SELECT key, value FROM settings;
+    """)
+
+    records = sql_cursor.fetchall()
+
+    value = None
+    for record in records:
+        if record[0] == key:
+            value = record[1]
+            
+    conn.close()   
+    
+    return value   
+
+
+#####################################################
+#####################################################    
+def save_setting(key, value):
+
+    old_value = get_setting(key)
+
+    if old_value == None:
+        sql = """
+                INSERT INTO settings (key, value) values (:key, :value)
+              """ 
+    else:
+        sql = """
+                update bill
+                    set value =  :value
+                where key = :key
+              """
+
+    conn = sqlite3.connect(get_db_file())
+    sql_cursor = conn.cursor()
+    sql_cursor.execute(sql,
+    {
+        'key':key,
+        'value':value,
+    })
+
+    conn.commit()
+    conn.close()   
+   
+
+#####################################################
 #####################################################    
 def initilize_month_sql(year, month):
     conn = sqlite3.connect(get_db_file())
